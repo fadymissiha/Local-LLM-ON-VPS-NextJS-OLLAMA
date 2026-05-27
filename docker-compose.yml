@@ -1,0 +1,31 @@
+services:
+  # Next.js Chat Web App
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nextjs-chat-web
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      # Tell Next.js backend to connect to Ollama via internal network (with .env configuration fallback)
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://ollama:11434}
+      # Set the default model dynamically from host parameter configuration
+      - DEFAULT_MODEL=${DEFAULT_MODEL:-llama3}
+    depends_on:
+      - ollama
+
+  # Ollama Server
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-server
+    restart: always
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+
+volumes:
+  ollama-data:
+    driver: local
