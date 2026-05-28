@@ -1,38 +1,17 @@
 services:
-  # Next.js Chat Web App
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/YOUR_USERNAME/nextjs-chat-web:latest
     container_name: nextjs-chat-web
     restart: always
     ports:
       - "3000:3000"
     environment:
-      # Tell Next.js backend to connect to the external Ollama server defined in .env
       - OLLAMA_BASE_URL=${OLLAMA_BASE_URL}
-      # Pre-load/select this model in the chat UI
       - DEFAULT_MODEL=${DEFAULT_MODEL:-qwen2.5:1.5b}
     labels:
-      # Enable Traefik proxying for this container
       - "traefik.enable=true"
-      # Route incoming traffic for the domain to this container
       - "traefik.http.routers.nextjs-chat.rule=Host(`${DOMAIN_NAME:-chat.yourdomain.com}`)"
-      # Define Traefik entrypoint (usually websecure for HTTPS)
       - "traefik.http.routers.nextjs-chat.entrypoints=${TRAEFIK_ENTRYPOINT:-websecure}"
-      # Enable TLS/SSL
       - "traefik.http.routers.nextjs-chat.tls=true"
-      # Specify the SSL Certificate resolver defined in Traefik (e.g., letsencrypt, myresolver)
       - "traefik.http.routers.nextjs-chat.tls.certresolver=${TRAEFIK_CERTRESOLVER:-myresolver}"
-      # Specify the internal port the webapp listens to inside the container
       - "traefik.http.services.nextjs-chat.loadbalancer.server.port=3000"
-    networks:
-      - default
-      # Connect to Traefik's external bridge network to route requests
-      - traefik_net
-
-networks:
-  # External network where Traefik is running
-  traefik_net:
-    external: true
-    name: ${TRAEFIK_NETWORK:-traefik_public}

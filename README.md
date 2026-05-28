@@ -52,10 +52,15 @@ cd /var/www/cosmic-chat
 # (Transfer the files here)
 ```
 
-### Step 3: Run the Docker Compose Stack
-Compile and launch the container ecosystem in detached mode:
+### Step 3: Build and Publish the Web Image
+Build the web app image in CI or on your machine, then push it to a registry your VPS can pull from.
 ```bash
-docker compose up --build -d
+docker build -t ghcr.io/your-org/hostinger-nextjs-ollama-chat:latest .
+docker push ghcr.io/your-org/hostinger-nextjs-ollama-chat:latest
+```
+Set `WEB_IMAGE` in the `.env` file to the published image tag, then run the stack:
+```bash
+docker compose up -d
 ```
 Verify both containers are running successfully:
 ```bash
@@ -152,8 +157,8 @@ sudo certbot --nginx -d chat.yourdomain.com
   ```bash
   docker exec -it ollama-server ollama list
   ```
-- **Rebuild from scratch (in case of package modifications)**:
+- **Refresh the published image**:
   ```bash
-  docker compose build --no-cache
+  docker compose pull
   docker compose up -d
   ```

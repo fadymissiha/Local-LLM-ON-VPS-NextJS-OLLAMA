@@ -1,0 +1,12 @@
+[
+  {
+    "username": "fady",
+    "passwordHash": "65a4f56200dbb62fd60bae68b2843e1e026bcaa76fc34a1035fb0ec500ebb6b1227227f8218517706e6613d3c620f8cf06875d26e1d26f862b5c4b335c8835c5",
+    "salt": "3b63a1bc75013d0f31f9eeead621d8a6",
+    "createdAt": "2026-05-28T20:31:54.168Z"
+  },
+  {
+    "email": "fady.missiha@gmail.com",
+    "createdAt": "2026-05-28T20:53:54.218Z"
+  }
+]

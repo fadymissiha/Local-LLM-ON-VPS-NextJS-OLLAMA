@@ -23,7 +23,7 @@ export default function ChatPage() {
   const [conversations, setConversations] = useState<Conversation[]>([
     {
       id: "default",
-      title: "New Cosmic Chat",
+      title: "New Fast Chat",
       messages: [],
     },
   ]);
@@ -89,12 +89,12 @@ export default function ChatPage() {
         setOllamaStatus("offline");
         setModels(data.models || []);
         setActiveModel(defaultModelFromEnv);
-        setErrorMessage("Could not connect to Ollama. Running in offline/demo mode.");
+        setErrorMessage("The assistant service is currently unavailable.");
       }
     } catch (err: any) {
       setOllamaStatus("offline");
-      setActiveModel("llama3");
-      setErrorMessage("Network error: Could not reach the model list endpoint.");
+      setActiveModel("default");
+      setErrorMessage("The assistant service is currently unavailable.");
     }
   };
 
@@ -102,7 +102,7 @@ export default function ChatPage() {
     const newId = `chat_${Date.now()}`;
     const newConv: Conversation = {
       id: newId,
-      title: "New Cosmic Chat",
+      title: "New Fast Chat",
       messages: [],
     };
     setConversations([newConv, ...conversations]);
@@ -217,11 +217,11 @@ export default function ChatPage() {
     } catch (err: any) {
       console.error(err);
       
-      let errorResponseText = "⚠️ Connection to Ollama failed.\n\n";
+      let errorResponseText = "⚠️ The assistant service could not respond right now.\n\n";
       if (ollamaStatus === "offline") {
-        errorResponseText += "Your local Ollama container appears to be offline. Please verify Docker is running, compile the containers, and run:\n`docker exec -it ollama-server ollama run " + activeModel + "` inside your host terminal to download a model.";
+        errorResponseText += "The service appears to be unavailable. Please try again in a moment.";
       } else {
-        errorResponseText += `An error occurred while streaming response: ${err.message || err}`;
+        errorResponseText += `An error occurred while streaming the response: ${err.message || err}`;
       }
 
       setConversations((prev) =>
@@ -363,7 +363,7 @@ export default function ChatPage() {
       <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
         <div className="sidebar-header">
           <div className="logo-icon">🚀</div>
-          <div className="logo-text">CosmicChat</div>
+          <div className="logo-text">FastChat</div>
         </div>
 
         <button className="new-chat-btn" onClick={handleCreateNewChat}>
@@ -388,7 +388,7 @@ export default function ChatPage() {
         <div className="sidebar-footer">
           <div className="status-badge">
             <span className={`status-dot ${ollamaStatus === "online" ? "online" : ""}`} />
-            <span>Ollama: {ollamaStatus === "online" ? "Connected" : ollamaStatus === "checking" ? "Checking..." : "Offline (Demo)"}</span>
+            <span>Service: {ollamaStatus === "online" ? "Connected" : ollamaStatus === "checking" ? "Checking..." : "Unavailable"}</span>
           </div>
           {errorMessage && (
             <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", lineHeight: 1.3 }}>
@@ -407,41 +407,9 @@ export default function ChatPage() {
               ☰
             </button>
             <div className="header-model-info">
-              <span className="active-model-title">{activeModel || "No model selected"}</span>
-              <span className="active-model-subtitle">Local LLM Interface</span>
+              <span className="active-model-title">Private Assistant</span>
+              <span className="active-model-subtitle">Ready for chat</span>
             </div>
-          </div>
-
-          {/* Model Selector Dropdown */}
-          <div className="model-selector-wrapper">
-            <select
-              className="model-select"
-              value={activeModel}
-              onChange={(e) => setActiveModel(e.target.value)}
-              disabled={isStreaming}
-            >
-              {models.map((model) => (
-                <option key={model.model} value={model.model}>
-                  {model.name}
-                </option>
-              ))}
-              {models.length === 0 && (
-                <option value="llama3">llama3 (Offline Default)</option>
-              )}
-            </select>
-            <button 
-              onClick={fetchModels} 
-              style={{
-                background: "none",
-                border: "none",
-                color: "var(--text-secondary)",
-                cursor: "pointer",
-                padding: "4px"
-              }}
-              title="Refresh Models"
-            >
-              🔄
-            </button>
           </div>
         </header>
 
@@ -449,9 +417,9 @@ export default function ChatPage() {
         <div className="messages-pane">
           {messages.length === 0 ? (
             <div className="empty-state">
-              <h2 className="empty-title">Unlock Local Intelligence</h2>
+              <h2 className="empty-title">Start a conversation</h2>
               <p className="empty-subtitle">
-                A highly secure, ultra-responsive private assistant powered by Ollama running in Hostinger Docker containers.
+                A private assistant is ready to help with writing, planning, brainstorming, and quick answers.
               </p>
 
               {/* Suggestions Grid */}
@@ -495,7 +463,7 @@ export default function ChatPage() {
                     <span className="streaming-caret" />
                   )}
                   <div className="msg-meta">
-                    <span>{msg.role === "user" ? "You" : activeModel}</span>
+                    <span>{msg.role === "user" ? "You" : "Assistant"}</span>
                   </div>
                 </div>
               </div>
@@ -521,7 +489,7 @@ export default function ChatPage() {
                     handleSendMessage();
                   }
                 }}
-                placeholder="Ask your local AI assistant..."
+                placeholder="Ask the assistant..."
                 disabled={isStreaming}
               />
               <button 
@@ -533,7 +501,7 @@ export default function ChatPage() {
               </button>
             </form>
             <div className="input-footer-hint">
-              Local AI responses can be slow depending on CPU allocated inside Hostinger VPS.
+              Responses may take a moment depending on current service load.
             </div>
           </div>
         </footer>

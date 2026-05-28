@@ -14,10 +14,10 @@ const firaCode = Fira_Code({
 });
 
 export const metadata: Metadata = {
-  title: "Cosmic Chat - Premium Local AI Hub",
-  description: "An ultra-fast, glassmorphic local AI chat assistant powered by Next.js and Ollama running on Docker.",
-  keywords: ["Ollama", "Next.js", "Docker", "AI Chatbot", "Local LLM", "Hostinger VPS"],
-  authors: [{ name: "Cosmic AI Developer" }],
+  title: "Fast Chat",
+  description: "A polished chat assistant with a premium interface.",
+  keywords: ["Chat", "Assistant", "Web App", "AI Chat"],
+  authors: [{ name: "Fast AI Developer" }],
 };
 
 export default function RootLayout({
