@@ -1,17 +1,23 @@
 services:
   web:
-    image: ghcr.io/YOUR_USERNAME/nextjs-chat-web:latest
-    container_name: nextjs-chat-web
-    restart: always
+    image: fadymissiha/hostinger-nextjs-ollama-chat:latest
+    user: "0:0"
+    restart: unless-stopped
     ports:
       - "3000:3000"
+    volumes:
+      - fast-chat_data:/app/data
     environment:
-      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL}
-      - DEFAULT_MODEL=${DEFAULT_MODEL:-qwen2.5:1.5b}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.nextjs-chat.rule=Host(`${DOMAIN_NAME:-chat.yourdomain.com}`)"
-      - "traefik.http.routers.nextjs-chat.entrypoints=${TRAEFIK_ENTRYPOINT:-websecure}"
-      - "traefik.http.routers.nextjs-chat.tls=true"
-      - "traefik.http.routers.nextjs-chat.tls.certresolver=${TRAEFIK_CERTRESOLVER:-myresolver}"
-      - "traefik.http.services.nextjs-chat.loadbalancer.server.port=3000"
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL}
+      DEFAULT_MODEL: ${DEFAULT_MODEL:-qwen2.5:1.5b}
+      AUTH_SECRET: ${AUTH_SECRET}
+      AUTH_URL: ${AUTH_URL}
+      AUTH_TRUST_HOST: "true"
+      AUTH_SIGNUP_CODE: ${AUTH_SIGNUP_CODE}
+      AUTH_SMTP_HOST: ${AUTH_SMTP_HOST}
+      AUTH_SMTP_PORT: ${AUTH_SMTP_PORT}
+      AUTH_SMTP_USER: ${AUTH_SMTP_USER}
+      AUTH_SMTP_PASS: ${AUTH_SMTP_PASS}
+      AUTH_SMTP_FROM: ${AUTH_SMTP_FROM}
+volumes:
+  fast-chat_data:
