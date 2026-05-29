@@ -7,7 +7,7 @@ export function getAuthConfig() {
   return {
     username: process.env.AUTH_USERNAME || "",
     password: process.env.AUTH_PASSWORD || "",
-    sessionSecret: process.env.AUTH_SESSION_SECRET || process.env.AUTH_PASSWORD || "",
+    sessionSecret: process.env.AUTH_SESSION_SECRET || process.env.AUTH_SECRET || process.env.AUTH_PASSWORD || "",
   };
 }
 
