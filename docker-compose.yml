@@ -19,5 +19,7 @@ services:
       AUTH_SMTP_USER: ${AUTH_SMTP_USER}
       AUTH_SMTP_PASS: ${AUTH_SMTP_PASS}
       AUTH_SMTP_FROM: ${AUTH_SMTP_FROM}
+      NEXT_URL: ${NEXT_URL}
+      NEXT_SECRET: ${NEXT_SECRET}
 volumes:
   fast-chat_data:
