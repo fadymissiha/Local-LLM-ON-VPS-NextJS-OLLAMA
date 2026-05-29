@@ -80,7 +80,18 @@ export function listUsers() {
 export function findUser(email: string) {
   const normalizedEmail = normalizeEmail(email);
   const users = readUsersFile();
-  return users.find((user) => user.email === normalizedEmail) || null;
+  return (
+    users.find((user) => {
+      if (user.email) {
+        return user.email === normalizedEmail;
+      }
+      // Support legacy users with 'username' field
+      if ((user as any).username) {
+        return (user as any).username.toLowerCase() === normalizedEmail;
+      }
+      return false;
+    }) || null
+  );
 }
 
 export function createUser(email: string, providerCode: string) {
