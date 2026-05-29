@@ -1,6 +1,6 @@
 services:
   web:
-    image: fadymissiha/hostinger-nextjs-ollama-chat:latest
+    image: fadymissiha/nextjs-chat-web:latest
     user: "0:0"
     restart: unless-stopped
     ports:
